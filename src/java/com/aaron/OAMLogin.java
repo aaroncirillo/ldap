@@ -21,9 +21,64 @@ public class OAMLogin
 
    public String username;
    public String password;
-   public static final String resource = "//amcirillo-linux:80/instore/ApplicationValWCPortalApp/faces/oracle/webcenter/portalapp/pages/home.jspx";
+   public static final String resource = "//amcirillo-linux/myprotectedurl/index.html";
    public static final String protocol = "http";
    public static final String method = "GET";
+   public String resourceProtected;
+   public String authenticated;
+   public String authorized;
+   public String formAuth;
+   public String OAMError;
+
+    public String getOAMError()
+    {
+        return OAMError;
+    }
+
+    public void setOAMError(String OAMError)
+    {
+        this.OAMError = OAMError;
+    }
+
+    public String getAuthenticated()
+    {
+        return authenticated;
+    }
+
+    public void setAuthenticated(String authenticated)
+    {
+        this.authenticated = authenticated;
+    }
+
+    public String getAuthorized()
+    {
+        return authorized;
+    }
+
+    public void setAuthorized(String authorized)
+    {
+        this.authorized = authorized;
+    }
+
+    public String getFormAuth()
+    {
+        return formAuth;
+    }
+
+    public void setFormAuth(String formAuth)
+    {
+        this.formAuth = formAuth;
+    }
+
+    public String getResourceProtected()
+    {
+        return resourceProtected;
+    }
+
+    public void setResourceProtected(String resourceProtected)
+    {
+        this.resourceProtected = resourceProtected;
+    }
 
     public String getPassword()
     {
@@ -61,48 +116,50 @@ public class OAMLogin
             ResourceRequest rrq = new ResourceRequest(protocol, resource, method);
             if(rrq.isProtected())
             {
-                System.out.println("Requested resource is protected");
+                resourceProtected = "Requested resource is protected";
                 AuthenticationScheme authnScheme = new AuthenticationScheme(rrq);
                 if(authnScheme.isForm())
                 {
-                    System.out.println("Form based auth detected");
+                    formAuth = "Form based auth detected";
                     Hashtable credentials = new Hashtable();
                     credentials.put("userid", username);
                     credentials.put("password", password);
                     UserSession session = new UserSession(rrq, credentials);
                     if(session.getStatus() == UserSession.LOGGEDIN)
                     {
-                        System.out.println("User is authenticated to OAM");
+                        authenticated = "User is authenticated to OAM";
                         if(session.isAuthorized(rrq))
                         {
-                            System.out.println("User is authorized for requested resource");
+                            authorized = "User is authorized for requested resource";
                         }
                         else
                         {
-                            System.out.println("User not authorized for requested resource");
+                            authorized = "User not authorized for requested resource";
                         }
                     }
                     else
                     {
-                        System.out.println("User not authenticated to OAM");
+                        authenticated = "User not authenticated to OAM";
                     }
                 }
                 else
                 {
-                    System.out.println("Form based auth not deteced");
+                    formAuth = "Form based auth not deteced";
                 }
             }
             else
             {
-                System.out.println("Requested resource is not protected");
+                resourceProtected = "Requested resource is not protected";
             }
             ac.shutdown();            
         }
         catch(AccessException e)
         {
-            System.out.println("Access Exception: " + e.getMessage());
             Date date = new Date();
             System.out.println(date);
+            System.out.println("Access Exception: " + e.getMessage());
+            OAMError = e.getMessage();
+            
         }
     }
 }

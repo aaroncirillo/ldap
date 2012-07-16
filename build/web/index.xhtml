@@ -81,6 +81,13 @@
                 <br />
                 <h:commandButton value="Login" action="#{oAMLogin.login()}">
                 </h:commandButton>
+                <h:outputText value="#{oAMLogin.resourceProtected}" />
+                <br />
+                <h:outputText value="#{oAMLogin.authenticated}" />
+                <br />
+                <h:outputText value="#{oAMLogin.authenticated}" />
+                <br />
+                <h:outputText value="#{oAMLogin.authorized}" />
             </rich:panel>
         </h:form>
 
