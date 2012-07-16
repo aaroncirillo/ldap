@@ -21,10 +21,9 @@ public class OAMLogin
 
    public String username;
    public String password;
-   public static final String resource = "//instore/ApplicationValWCPortalApp/faces/oracle/webcenter/portalapp/pages/home.jspx";
+   public static final String resource = "//amcirillo-linux:80/instore/ApplicationValWCPortalApp/faces/oracle/webcenter/portalapp/pages/home.jspx";
    public static final String protocol = "http";
    public static final String method = "GET";
-   public String m_configLocation = "/myfolder";
 
     public String getPassword()
     {
@@ -58,7 +57,7 @@ public class OAMLogin
         AccessClient ac;
         try
         {
-            ac = AccessClient.createDefaultInstance("", AccessClient.CompatibilityMode.OAM_10G);
+            ac = AccessClient.createDefaultInstance("/home/aaron/NetBeansProjects/ldap/build/web/WEB-INF/lib", AccessClient.CompatibilityMode.OAM_10G);
             ResourceRequest rrq = new ResourceRequest(protocol, resource, method);
             if(rrq.isProtected())
             {
