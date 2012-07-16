@@ -24,16 +24,35 @@ import oracle.security.am.asdk.*;
 public class OAMLogin
 {
 
-    public String username;
-    public String password;
-    public static final String resource = "//amcirillo-linux/myprotectedurl/index.html";
-    public static final String protocol = "http";
-    public static final String method = "GET";
-    public String resourceProtected;
-    public String authenticated;
-    public String authorized;
-    public String formAuth;
-    public String OAMError;
+    private String username;
+    private String password;
+    private static final String resource = "//amcirillo-linux/myprotectedurl/index.html";
+    private static final String protocol = "http";
+    private static final String method = "GET";
+    private String resourceProtected;
+    private String authenticated;
+    private String authorized;
+    private String formAuth;
+    private String OAMError;
+    private String token;
+    private UserSession session;
+
+    public String getToken()
+    {
+        if(token != null)
+        {
+            return "Session token:" + token;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    public void setToken(String token)
+    {
+        this.token = token;
+    }
 
     public String getOAMError()
     {
@@ -129,10 +148,11 @@ public class OAMLogin
                     Hashtable credentials = new Hashtable();
                     credentials.put("userid", username);
                     credentials.put("password", password);
-                    UserSession session = new UserSession(rrq, credentials);
+                    session = new UserSession(rrq, credentials);
                     if (session.getStatus() == UserSession.LOGGEDIN)
                     {
                         authenticated = "User is authenticated to OAM";
+                        token = session.getSessionToken();
                         if (session.isAuthorized(rrq))
                         {
                             authorized = "User is authorized for requested resource";
