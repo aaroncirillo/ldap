@@ -1,0 +1,59 @@
+<!--<!DOCTYPE html>-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j"
+      >
+    <h:head>
+        <title>JSF Hello World</title>
+        <meta http-equiv="refresh" content="#{session.maxInactiveInterval};url=timeout.xhtml" />
+    </h:head>
+    <h:body>
+        <h:form>
+            <rich:panel header="LDAP app to search for duplicate users. Built on RichFaces, JSF, and Glassfish">
+                <h:panelGrid columns="2">
+
+                    Server:                
+                    <h:selectOneMenu value="#{backing.server}">
+                        <f:selectItem itemValue="valwgpoid002vm" itemLabel="DEV - valwgpoid002vm" />
+                        <f:selectItem itemValue="valwgpoid003vm" itemLabel="TST - valwgpoid003vm" />
+                        <f:selectItem itemValue="valvcsoid003vm" itemLabel="PRD - valvcsoid003vm" />
+                    </h:selectOneMenu>
+
+                    Context:
+                    <h:inputText id="context" value="#{backing.context}">
+                    </h:inputText>
+
+                    Port:
+                    <h:inputText id="port" value="#{backing.port}">
+                    </h:inputText>
+
+                    Username:
+                    <h:inputText id="username" value="#{backing.username}">
+                    </h:inputText>
+
+                    Password:
+                    <h:inputSecret id="password" value="#{backing.password}">
+                    </h:inputSecret>
+
+                </h:panelGrid>
+                <br />
+                <h:commandButton value="Establish LDAP Connection" action="#{backing.method}" disabled="#{backing.connectionStatus}">
+                </h:commandButton>
+                &nbsp;
+                <h:outputText id="ldapError" value="#{backing.ldapError}" style="color:#{backing.ldapErrorLevel}" />
+            </rich:panel>
+            <br />
+            <rich:panel header="Duplicate Users" id="dup_panel" >
+                <h:inputTextarea value="#{backing.duplicates}" id="duplist" rows="20" cols="150">
+                </h:inputTextarea>
+            </rich:panel>
+        </h:form>
+    </h:body>
+</html>
+
