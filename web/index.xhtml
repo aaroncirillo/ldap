@@ -62,7 +62,27 @@
 
             </rich:treeNode>
 
+
+
         </rich:tree>
+
+
+        <h:form>
+            <rich:panel header="LDAP app to search for duplicate users. Built on RichFaces, JSF, and Glassfish">
+                <h:panelGrid columns="2">
+                    Username:
+                    <h:inputText id="OAMUsername" value="#{oAMLogin.username}">
+                    </h:inputText>
+                    Password:
+                    <h:inputText id="OAMPassword" value="#{oAMLogin.password}">
+                    </h:inputText>
+                </h:panelGrid>
+                <br />
+                <h:commandButton value="Login" action="#{oAMLogin.login()}">
+                </h:commandButton>
+            </rich:panel>
+        </h:form>
+
     </h:body>
 </html>
 
