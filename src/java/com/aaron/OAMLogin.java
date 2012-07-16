@@ -4,6 +4,8 @@
  */
 package com.aaron;
 
+import java.sql.Time;
+import java.util.Date;
 import java.util.Hashtable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -19,7 +21,7 @@ public class OAMLogin
 
    public String username;
    public String password;
-   public static final String resource = "/instoredev/ApplicationValWCPortalApp/faces/oracle/webcenter/portalapp/pages/home.jspx";
+   public static final String resource = "//instore/ApplicationValWCPortalApp/faces/oracle/webcenter/portalapp/pages/home.jspx";
    public static final String protocol = "http";
    public static final String method = "GET";
    public String m_configLocation = "/myfolder";
@@ -100,6 +102,8 @@ public class OAMLogin
         catch(AccessException e)
         {
             System.out.println("Access Exception: " + e.getMessage());
+            Date date = new Date();
+            System.out.println(date);
         }
     }
 }
