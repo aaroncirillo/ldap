@@ -41,7 +41,7 @@ public class OAMLogin
     {
         if(token != null)
         {
-            return "Session token:" + token;
+            return "Session token: " + token;
         }
         else
         {
