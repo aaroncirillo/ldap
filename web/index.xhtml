@@ -54,6 +54,15 @@
                 </h:inputTextarea>
             </rich:panel>
         </h:form>
+        <rich:tree value="#{optionTree.getStationNodes()}" var="station" toggleType="client" >
+
+            <rich:treeNode >
+
+                <h:outputText value="#{station}" />
+
+            </rich:treeNode>
+
+        </rich:tree>
     </h:body>
 </html>
 
