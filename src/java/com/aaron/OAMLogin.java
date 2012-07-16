@@ -2,6 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
+
+//the full documentation for the OAM API is available here:
+// http://docs.oracle.com/cd/E21764_01/doc.1111/e12491/as_api.htm#CHDDAJHD
+
+
 package com.aaron;
 
 import java.sql.Time;
@@ -19,16 +24,16 @@ import oracle.security.am.asdk.*;
 public class OAMLogin
 {
 
-   public String username;
-   public String password;
-   public static final String resource = "//amcirillo-linux/myprotectedurl/index.html";
-   public static final String protocol = "http";
-   public static final String method = "GET";
-   public String resourceProtected;
-   public String authenticated;
-   public String authorized;
-   public String formAuth;
-   public String OAMError;
+    public String username;
+    public String password;
+    public static final String resource = "//amcirillo-linux/myprotectedurl/index.html";
+    public static final String protocol = "http";
+    public static final String method = "GET";
+    public String resourceProtected;
+    public String authenticated;
+    public String authorized;
+    public String formAuth;
+    public String OAMError;
 
     public String getOAMError()
     {
@@ -114,21 +119,21 @@ public class OAMLogin
         {
             ac = AccessClient.createDefaultInstance("/home/aaron/NetBeansProjects/ldap/build/web/WEB-INF/lib", AccessClient.CompatibilityMode.OAM_10G);
             ResourceRequest rrq = new ResourceRequest(protocol, resource, method);
-            if(rrq.isProtected())
+            if (rrq.isProtected())
             {
                 resourceProtected = "Requested resource is protected";
                 AuthenticationScheme authnScheme = new AuthenticationScheme(rrq);
-                if(authnScheme.isForm())
+                if (authnScheme.isForm())
                 {
                     formAuth = "Form based auth detected";
                     Hashtable credentials = new Hashtable();
                     credentials.put("userid", username);
                     credentials.put("password", password);
                     UserSession session = new UserSession(rrq, credentials);
-                    if(session.getStatus() == UserSession.LOGGEDIN)
+                    if (session.getStatus() == UserSession.LOGGEDIN)
                     {
                         authenticated = "User is authenticated to OAM";
-                        if(session.isAuthorized(rrq))
+                        if (session.isAuthorized(rrq))
                         {
                             authorized = "User is authorized for requested resource";
                         }
@@ -151,15 +156,15 @@ public class OAMLogin
             {
                 resourceProtected = "Requested resource is not protected";
             }
-            ac.shutdown();            
+            ac.shutdown();
         }
-        catch(AccessException e)
+        catch (AccessException e)
         {
             Date date = new Date();
             System.out.println(date);
             System.out.println("Access Exception: " + e.getMessage());
             OAMError = e.getMessage();
-            
+
         }
     }
 }
