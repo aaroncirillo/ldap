@@ -50,8 +50,9 @@ public class LoginServlet extends HttpServlet
             if (resource.isProtected())
             {
                 authnScheme = new AuthenticationScheme(resource);
-                if (authnScheme.isBasic())
+                if (authnScheme.isForm())
                 {
+                    System.out.println("here");
                     if (session == null)
                     {
                         String sUserName = request.getParameter("userid");
@@ -97,6 +98,7 @@ public class LoginServlet extends HttpServlet
                 }
                 else
                 {
+                    System.out.println("there");
                     out.println("<p>Resource Page" + requestedPage + " is not"
                             + " protected with BASIC\n");
                 }
