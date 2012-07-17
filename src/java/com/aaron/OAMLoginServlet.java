@@ -6,10 +6,13 @@ package com.aaron;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.util.Hashtable;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import oracle.security.am.asdk.*;
 
 /**
  *
@@ -17,83 +20,42 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class OAMLoginServlet extends HttpServlet
 {
-
-    /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
+    private AccessClient ac;
+    public void service(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException
     {
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         try
         {
-            /*
-             * TODO output your page here. You may use following sample code.
-             */
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet OAMLoginServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet OAMLoginServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            ac = AccessClient.createDefaultInstance("/home/aaron/NetBeansProjects/ldap/build/web/WEB-INF/lib", AccessClient.CompatibilityMode.OAM_10G);
+            ResourceRequest rrq = new ResourceRequest("http", request.getParameter("resource"), "get");
+            if (rrq.isProtected())
+            {
+                AuthenticationScheme authnScheme = new AuthenticationScheme(rrq);
+                if (authnScheme.isForm())
+                {
+                    Hashtable credentials = new Hashtable();
+                    credentials.put("userid", request.getParameter("userid"));
+                    credentials.put("password", request.getParameter("password"));
+                    UserSession session = new UserSession(rrq, credentials);
+                    if (session.getStatus() == UserSession.LOGGEDIN)
+                    {
+                        String token = session.getSessionToken();
+                        if (session.isAuthorized(rrq))
+                        {
+                            System.out.println("OAM Session Token: " + token);
+                        }
+                    }
+                }
+            }
+  
+            ac.shutdown();
         }
-        finally
-        {            
-            out.close();
+        catch (AccessException e)
+        {
+            Date date = new Date();
+            System.out.println(date);
+            System.out.println("Access Exception: " + e.getMessage());
+
         }
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP
-     * <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP
-     * <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo()
-    {
-        return "Short description";
-    }// </editor-fold>
 }
