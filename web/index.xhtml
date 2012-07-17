@@ -72,14 +72,16 @@
             <rich:panel header="Login to OAM">
                 <h:panelGrid columns="2">
                     Username:
-                    <h:inputText id="userid">
-                    </h:inputText>
+                    <input type="text" name="userid"   >
+                    </input>
+                    <br/>
                     Password:
-                    <h:inputSecret id="password">
-                    </h:inputSecret>
+                    <input type="password" name="password" >
+                    </input>
+                    <br/>
                     Requested URL:
-                    <h:inputText id="request" value="//amcirillo-linux/myprotectedurl/index.html">
-                    </h:inputText>
+                    <input name="request" value="//amcirillo-linux/myprotectedurl/index.html">
+                    </input>
                 </h:panelGrid>
                 <br />
                 <h:commandButton value="Login"  >
