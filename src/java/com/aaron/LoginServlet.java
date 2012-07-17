@@ -52,8 +52,6 @@ public class LoginServlet extends HttpServlet
                 authnScheme = new AuthenticationScheme(resource);
                 if (authnScheme.isForm())
                 {
-                    //if (session != null)
-                    //{
                         String sUserName = request.getParameter("userid");
                         String sPassword = request.getParameter("password");
                         System.out.println(sUserName);
@@ -69,7 +67,9 @@ public class LoginServlet extends HttpServlet
                                 {
                                     session = request.getSession(true);
                                     session.setAttribute("user", user);
-                                    response.sendRedirect(requestedPage);
+                                    System.out.println("User is authenticated to OAM and autorized for the requested resource");
+                                    System.out.println("OAM Session Token: " + user.getSessionToken() + "\n");
+                                    //response.sendRedirect(requestedPage);
                                 }
                                 else
                                 {
@@ -102,11 +102,11 @@ public class LoginServlet extends HttpServlet
                     out.println("<p>Resource Page" + requestedPage + " is not"
                             + " protected with BASIC\n");
                 }
-            //}
-            //else
-            //{
+            
+            
+            
                 out.println("<p>Page " + requestedPage + " is not protected\n");
-            //}
+            
         }
         catch (AccessException ex)
         {
