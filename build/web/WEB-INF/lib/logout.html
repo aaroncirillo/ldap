@@ -1,0 +1,78 @@
+<html>
+<head>
+<script language="javascript" type="text/javascript">
+
+///////////////////////////////////////////////////////////////////////////////
+// This logout.html can be used with an OAM 10g WebGate when deployed against
+// an OAM 11g Server.
+//
+// Before using this logout.html with a 10g WebGate, you need to:
+// 1. Within logout.html, verify that the values in the SERVER_LOGOUTURL reflect 
+//    your OAM 11g Server host and port. If not, change them as needed.
+//    Example:
+//      SERVER_LOGOUTURL = "http://oamserverhost:port/oam/server/logout";
+//      var below as follows:
+//        oamserverhost - the host where the OAM 11g Server is running.
+//        port - the port where the OAM 11g Server is running.
+// 2. Copy this file to the 10g WebGate directory <install-dir>/access/oamsso
+//
+///////////////////////////////////////////////////////////////////////////////
+var SERVER_LOGOUTURL = "http://valwgpoam001vm.val.vlss.local:14100/oam/server/logout";
+var END_URL = "end_url"; 
+///////////////////////////////////////////////////////////////////////////////
+
+function handleLogout() {
+
+    //get protocol used at the server (http/https)
+    var webServerProtocol = window.location.protocol;
+    //get server host:port
+    var webServerHostPort = window.location.host;
+    //get query string present in this URL
+    var origQueryString = window.location.search.substring(1);
+    var newQueryString = "";
+
+    //vars to parse the querystring
+    var params = new Array();
+    var par = new Array();
+    var val;
+
+    if (origQueryString != null && origQueryString != "") {
+
+       params = origQueryString.split("&");
+       for (var i=0; i<params.length; i++) {
+           if (i == 0)
+               newQueryString = "?";
+
+           if (i > 0)
+               newQueryString = newQueryString + "&";
+
+           par = params[i].split("=");
+
+           //prepare a new query string, if the end_url value needs to be changed
+           newQueryString = newQueryString + (par[0]);
+           newQueryString = newQueryString + "=";
+           val = par[1];
+
+           if (END_URL == par[0]) {
+               //check if val (value of end_url) begins with "/" or "%2F" (is it an URI?)
+               if (val.substring(0,1) == "/" || val.substring(0,1) == "%") {
+                   //modify the query string now
+                   val = webServerProtocol + "//" + webServerHostPort + val;
+               }
+           }
+           newQueryString = newQueryString + val;
+       }
+
+    }
+
+    //redirect the user to this URL
+    window.location.href = SERVER_LOGOUTURL + newQueryString;
+}
+
+</script>
+</head>
+
+<body onLoad="handleLogout();">
+
+</body>
+</html>
