@@ -68,7 +68,7 @@
         </rich:tree>-->
 
         <br />
-        <h:form action="/LoginServlet" method="post">
+        <h:form>
             <rich:panel header="Login to OAM">
                 <h:panelGrid columns="2">
                     Username:
@@ -79,7 +79,7 @@
                     </h:inputSecret>
                 </h:panelGrid>
                 <br />
-                <h:commandButton value="Login" >
+                <h:commandButton value="Login" action="/LoginServlet" >
                 </h:commandButton>
             </rich:panel>
         </h:form>
