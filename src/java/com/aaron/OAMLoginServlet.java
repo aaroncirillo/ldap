@@ -43,7 +43,7 @@ public class OAMLoginServlet extends HttpServlet
     {
         try
         {
-            ResourceRequest rrq = new ResourceRequest("http", request.getParameter("resource"), "get");
+            ResourceRequest rrq = new ResourceRequest("http", "//amcirillo-linux/myprotectedurl/index.html", "get");
             if (rrq.isProtected())
             {
                 AuthenticationScheme authnScheme = new AuthenticationScheme(rrq);
@@ -79,8 +79,6 @@ public class OAMLoginServlet extends HttpServlet
             {
                 System.out.println("Resource not protected\n");
             }
-
-            ac.shutdown();
         }
         catch (AccessException e)
         {
