@@ -68,21 +68,24 @@
         </rich:tree>-->
 
         <br />
-        <h:form>
+        <form action="http://localhost:8080/ldap/LoginServlet" method="POST" >
             <rich:panel header="Login to OAM">
                 <h:panelGrid columns="2">
                     Username:
-                    <h:inputText id="userid" value="#{oAMLogin.username}" >
+                    <h:inputText id="userid">
                     </h:inputText>
                     Password:
-                    <h:inputSecret id="password" value="#{oAMLogin.password}">
+                    <h:inputSecret id="password">
                     </h:inputSecret>
+                    Requested URL:
+                    <h:inputText id="request" value="//amcirillo-linux/myprotectedurl/index.html">
+                    </h:inputText>
                 </h:panelGrid>
                 <br />
-                <h:commandButton value="Login" action="/LoginServlet" >
+                <h:commandButton value="Login"  >
                 </h:commandButton>
             </rich:panel>
-        </h:form>
+        </form>
 
     </h:body>
 </html>
