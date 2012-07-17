@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Hashtable;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,13 +21,28 @@ import oracle.security.am.asdk.*;
  */
 public class OAMLoginServlet extends HttpServlet
 {
+
     private AccessClient ac;
+    
+    public void init(ServletConfig config) throws ServletException
+    {
+        try
+        {
+
+            AccessClient ac = AccessClient.createDefaultInstance("/home/aaron/NetBeansProjects/ldap/build/web/WEB-INF/lib",
+                    AccessClient.CompatibilityMode.OAM_10G);
+        }
+        catch (AccessException ae)
+        {
+            ae.printStackTrace();
+        }
+    }
+
     public void service(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException
     {
         try
         {
-            ac = AccessClient.createDefaultInstance("/home/aaron/NetBeansProjects/ldap/build/web/WEB-INF/lib", AccessClient.CompatibilityMode.OAM_10G);
             ResourceRequest rrq = new ResourceRequest("http", request.getParameter("resource"), "get");
             if (rrq.isProtected())
             {
@@ -39,15 +55,31 @@ public class OAMLoginServlet extends HttpServlet
                     UserSession session = new UserSession(rrq, credentials);
                     if (session.getStatus() == UserSession.LOGGEDIN)
                     {
-                        String token = session.getSessionToken();
                         if (session.isAuthorized(rrq))
                         {
+                            String token = session.getSessionToken();
                             System.out.println("OAM Session Token: " + token);
                         }
+                        else
+                        {
+                            System.out.println("User not authorized\n");
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("User not authenticated");
                     }
                 }
+                else
+                {
+                    System.out.println("For based authentication no detected\n");
+                }
             }
-  
+            else
+            {
+                System.out.println("Resource not protected\n");
+            }
+
             ac.shutdown();
         }
         catch (AccessException e)
