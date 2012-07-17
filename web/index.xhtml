@@ -68,29 +68,19 @@
         </rich:tree>-->
 
         <br />
-        <h:form>
+        <h:form action="/LoginServlet" method="post">
             <rich:panel header="Login to OAM">
                 <h:panelGrid columns="2">
                     Username:
-                    <h:inputText id="OAMUsername" value="#{oAMLogin.username}">
+                    <h:inputText id="userid" value="#{oAMLogin.username}" >
                     </h:inputText>
                     Password:
-                    <h:inputSecret id="OAMPassword" value="#{oAMLogin.password}">
+                    <h:inputSecret id="password" value="#{oAMLogin.password}">
                     </h:inputSecret>
                 </h:panelGrid>
                 <br />
-                <h:commandButton value="Login" action="#{oAMLogin.login()}">
+                <h:commandButton value="Login" >
                 </h:commandButton>
-                <br />
-                <h:outputText value="#{oAMLogin.resourceProtected}" />
-                <br />
-                <h:outputText value="#{oAMLogin.formAuth}" />
-                <br />
-                <h:outputText value="#{oAMLogin.authenticated}" />
-                <br />
-                <h:outputText value="#{oAMLogin.authorized}" />
-                <br />
-                <h:outputText value="#{oAMLogin.token}" />
             </rich:panel>
         </h:form>
 
