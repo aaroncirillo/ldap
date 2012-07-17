@@ -68,7 +68,7 @@ public class LoginServlet extends HttpServlet
                                 if (user.isAuthorized(resource))
                                 {
                                     session = request.getSession(true);
-                                    session.putValue("user", user);
+                                    session.setAttribute("user", user);
                                     response.sendRedirect(requestedPage);
                                 }
                                 else
@@ -89,7 +89,7 @@ public class LoginServlet extends HttpServlet
                     }
                     else
                     {
-                        user = (UserSession) session.getValue("user");
+                        user = (UserSession) session.getAttribute("user");
                         if (user.getStatus() == UserSession.LOGGEDIN)
                         {
                             out.println("<p>User " + user.getUserIdentity() + " already"
