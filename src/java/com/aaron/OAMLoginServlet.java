@@ -43,6 +43,7 @@ public class OAMLoginServlet extends HttpServlet
     {
         try
         {
+            PrintWriter out = response.getWriter();
             ResourceRequest rrq = new ResourceRequest("http", "//amcirillo-linux/myprotectedurl/index.html", "get");
             if (rrq.isProtected())
             {
@@ -58,26 +59,26 @@ public class OAMLoginServlet extends HttpServlet
                         if (session.isAuthorized(rrq))
                         {
                             String token = session.getSessionToken();
-                            System.out.println("OAM Session Token: " + token);
+                            out.println("OAM Session Token: " + token);
                         }
                         else
                         {
-                            System.out.println("User not authorized\n");
+                            out.println("User not authorized\n");
                         }
                     }
                     else
                     {
-                        System.out.println("User not authenticated");
+                        out.println("User not authenticated");
                     }
                 }
                 else
                 {
-                    System.out.println("For based authentication no detected\n");
+                    out.println("For based authentication no detected\n");
                 }
             }
             else
             {
-                System.out.println("Resource not protected\n");
+                out.println("Resource not protected\n");
             }
         }
         catch (AccessException e)
