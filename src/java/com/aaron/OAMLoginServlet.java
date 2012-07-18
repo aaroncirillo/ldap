@@ -6,6 +6,7 @@ package com.aaron;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Hashtable;
 import javax.servlet.ServletConfig;
@@ -68,7 +69,8 @@ public class OAMLoginServlet extends HttpServlet
                             {
                                 for (int i = 0; i < currentCookies.length; i++)
                                 {
-                                    if (currentCookies[i].getName() == "ObSSOCookie")
+                                    out.println(currentCookies[i].getName() + "\n");
+                                    if (currentCookies[i].getName().contentEquals("ObSSOCookie"))
                                     {
                                         haveObSSOCookie = true;
                                     }
@@ -77,14 +79,19 @@ public class OAMLoginServlet extends HttpServlet
                             if (!haveObSSOCookie)
                             {
                                 DigestUtils digest = new DigestUtils();
-                                Cookie ObSSOCookie = new Cookie("ObSSOCookie", digest.md5Hex(session.getSessionToken()));
-                                ObSSOCookie.setDomain("valassisonline.com");
-                                out.println("Adding ObSSOCookie\n");
+                                //oracle support said to do it like this, I think it's wrong
+                                //Cookie ObSSOCookie = new Cookie("ObSSOCookie", "ObSSOCookie=" + URLEncoder.encode(session.getSessionToken(), "ISO-8859-1" ));
+                                //I'm doing it this way
+                                Cookie ObSSOCookie = new Cookie("ObSSOCookie", URLEncoder.encode(session.getSessionToken(), "ISO-8859-1" ));
+                                out.println("Adding ObSSOCookie:" + ObSSOCookie.getValue());
+                                ObSSOCookie.setDomain(".val.vlss.local");
+                                ObSSOCookie.setPath("/");
                                 response.addCookie(ObSSOCookie);
                             }
                             else
                             {
                                 out.println("ObSSOCookie already detected, not adding\n");
+                                
                             }
                         }
                         else
